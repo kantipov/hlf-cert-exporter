@@ -1,0 +1,42 @@
+checkLabels: tier=hlf
+checkNamespaces:
+  - namespace
+  - anotherone
+
+serviceAccount: hlf-cert-exporter
+
+serviceMonitor:
+  enabled: true
+  interval: 1d
+
+service:
+  type: ClusterIP
+  port: 9090
+
+image:
+  tag: 0.0.1
+  repository: kantipov/hlf-cert-exporter
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+replicaCount: 1
+revisionHistoryLimit: 0
+updateStrategy:
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 0
+  type: RollingUpdate
+
+resources: {}
+  # limits:
+  #   cpu: 30m
+  #   memory: 48Mi
+  # requests:
+  #   cpu: 30m
+  #   memory: 48Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

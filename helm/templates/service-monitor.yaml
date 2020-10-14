@@ -1,0 +1,17 @@
+{{- if .Values.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "hlf-cert-exporter.fullname" . }}
+  labels:
+{{ include "labels.standard" . | indent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "hlf-cert-exporter.name" . }}
+      release: {{ .Release.Name }}
+  endpoints:
+  - port: metrics
+    path: /metrics
+    interval: {{ .Values.serviceMonitor.interval }}
+{{- end }}
