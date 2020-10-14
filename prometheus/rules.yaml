@@ -1,0 +1,24 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: rules-hlf-cert-exporter
+  namespace: monitoring
+
+spec:
+  groups:
+  - name: hlf-cert-exporter
+    rules:
+    - alert: CertificateExpire30
+      expr: max_over_time(hlf_cert_not_after[25h]) - time() < 86400 * 30
+      for: 30s
+      labels:
+        severity: warning
+      annotations:
+        message: "HLF certificates is going to expire in 30 days"
+    - alert: CertificateExpire10
+      expr: max_over_time(hlf_cert_not_after[25h]) - time() < 86400 * 10
+      for: 30s
+      labels:
+        severity: critical
+      annotations:
+        message: "HLF certificates is going to expire in 10 days"
